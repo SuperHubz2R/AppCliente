@@ -1,0 +1,1122 @@
+<html class="scroll-smooth" lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   DoisR Barber Shop
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+    font-family: "Inter", sans-serif;
+   }
+   /* Hide scrollbar for all browsers */
+   .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+   }
+   .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+   }
+   /* Splash overlay */
+   #splashOverlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+   }
+   #splashOverlay.show {
+    opacity: 1;
+    pointer-events: all;
+   }
+   /* Spin animation */
+   @keyframes spin {
+    0% {
+     transform: rotate(0deg);
+    }
+    100% {
+     transform: rotate(360deg);
+    }
+   }
+   #splashOverlay img {
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+   }
+   /* Sidebar cart */
+   #cartSidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    background-color: #111827; /* Tailwind gray-900 */
+    color: white;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.3);
+    z-index: 60;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    transform: translateX(100%);
+  }
+  #cartSidebar.open {
+    transform: translateX(0);
+  }
+  #cartSidebar header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #cartSidebar header button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  #cartItems {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  #cartItems .cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #374151; /* Tailwind gray-700 */
+    padding-bottom: 0.5rem;
+  }
+  #cartItems .cart-item-name {
+    font-weight: 600;
+  }
+  #cartItems .cart-item-qty {
+    margin-left: 0.5rem;
+    color: #9ca3af; /* Tailwind gray-400 */
+  }
+  #cartItems .cart-item-price {
+    font-weight: 600;
+  }
+  #cartTotal {
+    font-weight: 700;
+    font-size: 1.125rem;
+    border-top: 1px solid #374151;
+    padding-top: 0.75rem;
+    text-align: right;
+  }
+  #cartSidebar footer button {
+    width: 100%;
+    background: linear-gradient(to right, #06b6d4, #84cc16);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  /* Overlay behind sidebar */
+  #sidebarOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 55;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #sidebarOverlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  /* Scrollbar for cart items */
+  #cartItems::-webkit-scrollbar {
+    width: 6px;
+  }
+  #cartItems::-webkit-scrollbar-thumb {
+    background-color: #4b5563; /* Tailwind gray-600 */
+    border-radius: 3px;
+  }
+  #cartItems::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 400px) {
+    #cartSidebar {
+      width: 100vw;
+    }
+  }
+  /* Hide footer when sidebar open */
+  footer.hidden {
+    display: none !important;
+  }
+  /* Modal for scheduling */
+  #scheduleModal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 70;
+  }
+  #scheduleModal.show {
+    display: flex;
+  }
+  #scheduleModalContent {
+    background: white;
+    border-radius: 1rem;
+    max-width: 320px;
+    width: 90%;
+    padding: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  #scheduleModalContent h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    color: #111827;
+  }
+  #scheduleModalContent ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    overflow-x: auto;
+  }
+  #scheduleModalContent ul li {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-align: center;
+    min-width: 70px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #scheduleModalContent ul li.available {
+    background-color: #22c55e; /* green-500 */
+  }
+  #scheduleModalContent ul li.booked {
+    background-color: #eab308; /* yellow-400 */
+    color: #1e293b; /* gray-800 for contrast */
+  }
+  #scheduleModalContent ul li.busy {
+    background-color: #3b82f6; /* blue-500 */
+  }
+  #scheduleModalContent ul li:hover {
+    filter: brightness(0.85);
+  }
+  #scheduleModalContent ul li .status-text {
+    font-size: 0.6rem;
+    margin-top: 0.1rem;
+    font-weight: 500;
+  }
+  #scheduleModalContent ul li.available .status-text {
+    color: #d9f99d; /* lighter green */
+  }
+  #scheduleModalContent ul li.booked .status-text {
+    color: #fef08a; /* lighter yellow */
+  }
+  #scheduleModalContent ul li.busy .status-text {
+    color: #93c5fd; /* lighter blue */
+  }
+  #scheduleModalContent button.closeBtn {
+    background: linear-gradient(to right, #06b6d4, #84cc16);
+    color: white;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+  }
+  /* Footer with trash icon next to "Ver Carrinho" */
+  #pageFooter {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: white;
+    z-index: 30;
+  }
+  #pageFooter .icon-button {
+    cursor: pointer;
+    color: #ef4444; /* red */
+    font-size: 1.75rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+  }
+  #pageFooter .icon-button:hover {
+    color: #f87171; /* lighter red */
+  }
+  #pageFooter .cart-info {
+    flex: 1;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: white;
+  }
+  #pageFooter #viewCartBtn {
+    background: linear-gradient(to right, #06b6d4, #84cc16);
+    color: white;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  #pageFooter .cart-summary {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+  #pageFooter .cart-summary > div {
+    white-space: nowrap;
+  }
+  </style>
+ </head>
+ <body class="bg-gray-200 min-h-screen flex flex-col justify-between">
+  <!-- Splash overlay -->
+  <div id="splashOverlay" aria-hidden="true">
+   <img alt="Logo DoisR Barber Shop girando" src="/images/Logo.png" />
+  </div>
+  <!-- Sidebar cart -->
+  <aside id="cartSidebar" aria-label="Carrinho de compras" role="dialog" aria-modal="true" tabindex="-1">
+   <header>
+    <span>Carrinho</span>
+    <button id="closeCartBtn" aria-label="Fechar carrinho">&times;</button>
+   </header>
+   <div id="cartItems" tabindex="0" aria-live="polite" aria-relevant="additions removals">
+    <p class="text-gray-400 text-center">Seu carrinho está vazio.</p>
+   </div>
+   <div id="cartTotal">Total: R$ 0,00</div>
+   <footer>
+    <button id="checkoutBtn" type="button">Finalizar Compra</button>
+   </footer>
+  </aside>
+  <div id="sidebarOverlay" tabindex="-1"></div>
+
+  <!-- Schedule Modal -->
+  <div id="scheduleModal" role="dialog" aria-modal="true" aria-labelledby="scheduleTitle" tabindex="-1">
+   <div id="scheduleModalContent">
+    <h3 id="scheduleTitle">Selecione uma data e horário</h3>
+    <ul id="scheduleList" tabindex="0" aria-label="Lista de datas e horários disponíveis para agendamento">
+     <!-- Dates and times will be inserted here -->
+    </ul>
+    <button class="closeBtn" id="closeScheduleBtn" aria-label="Fechar agendamento">Fechar</button>
+   </div>
+  </div>
+
+  <!-- Top black header -->
+  <header class="bg-black flex items-center justify-between px-2 py-1 rounded-b-3xl relative z-20">
+   <div class="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full font-bold text-black text-[10px]">
+    <img alt="Logo DoisR Barber Shop" class="w-8 h-8 object-contain" src="/images/Logo.png"/>
+   </div>
+   <div class="flex items-center justify-center w-32 h-10 font-semibold text-black text-xs">
+    <img alt="Título DoisR Barber Shop" class="w-28 h-8 object-contain" src="/images/Título.png"/>
+   </div>
+   <div class="relative cursor-pointer text-white text-2xl" id="cartIcon" title="Ver Carrinho">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold">0</span>
+   </div>
+  </header>
+  <!-- Banner -->
+  <section class="mx-2 mt-4 bg-white rounded-3xl h-20 flex items-center justify-center font-bold text-black text-xs">
+   <img alt="Banner promocional DoisR Barber Shop" class="w-full h-full object-contain rounded-3xl" src="/images/Banner.png"/>
+  </section>
+  <!-- Navigation buttons -->
+  <nav class="flex justify-start mx-2 mt-4 gap-1 overflow-x-auto scrollbar-hide">
+   <button class="flex items-center gap-1 bg-black rounded-full px-1.5 py-1 min-w-[70px] shrink-0">
+    <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-[6px] font-semibold text-black">
+     <img alt="Ícone serviços" class="w-4 h-4 object-contain" src="/images/serviço.png"/>
+    </div>
+    <span class="text-white font-bold text-[10px] leading-none">Serviços</span>
+   </button>
+   <button class="flex items-center gap-1 bg-black rounded-full px-1.5 py-1 min-w-[70px] shrink-0">
+    <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-[6px] font-semibold text-black">
+     <img alt="Ícone loja" class="w-4 h-4 object-contain" src="/images/Loja.png"/>
+    </div>
+    <span class="text-white font-bold text-[10px] leading-none">Loja</span>
+   </button>
+   <button class="flex items-center gap-1 bg-black rounded-full px-1.5 py-1 min-w-[90px] shrink-0">
+    <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-[6px] font-semibold text-black">
+     <img alt="Ícone agendamentos" class="w-4 h-4 object-contain" src="/images/Agendar.png"/>
+    </div>
+    <span class="text-white font-bold text-[10px] leading-none">Agendamentos</span>
+   </button>
+   <button class="flex items-center gap-1 bg-black rounded-full px-1.5 py-1 min-w-[90px] shrink-0">
+    <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-[6px] font-semibold text-black">
+     <img alt="Ícone planos" class="w-4 h-4 object-contain" src="/images/Planos.png"/>
+    </div>
+    <span class="text-white font-bold text-[10px] leading-none">Planos</span>
+   </button>
+  </nav>
+  <!-- Services Section -->
+  <section class="mx-2 mt-6 space-y-1">
+   <div class="flex flex-col gap-0.5">
+    <p class="font-bold text-black text-[11px] leading-tight">
+     Escolha seu serviço:
+    </p>
+    <p class="font-extrabold text-gray-600 text-[12px] leading-tight">
+     Os mais populares na DoisR
+    </p>
+   </div>
+   <div class="flex gap-0.5 overflow-x-auto scrollbar-hide pb-1">
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de corte masculino com tesoura e cabelo estilizado" class="w-12 h-12 object-contain" src="/images/corte-masculino.png"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Corte
+      <br/>
+      Masculino
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      De
+      <span class="line-through text-red-600">
+       R$35
+      </span>
+      por:
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Corte Masculino', 30)">
+      R$30
+      <span class="ml-0.5">
+       AGENDAR
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de barba e bigode estilizados" class="w-12 h-12 object-contain" src="/images/barba-bigode.png"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Barba
+      <br/>
+      e Bigode
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      De
+      <span class="line-through text-red-600">
+       R$35
+      </span>
+      por:
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Barba e Bigode', 30)">
+      R$30
+      <span class="ml-0.5">
+       AGENDAR
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de depilação nariz e orelha" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/2dfecabd-21d8-427f-36d8-c494e059a34c.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Depilação
+      <br/>
+      (Nariz e Orelha)
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      R$20
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Depilação (Nariz e Orelha)', 20)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de sobrancelha navalha" class="w-12 h-12 object-contain" src="/images/sobrancelha.png"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Sobrancelha
+      <br/>
+      Navalha
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      De
+      <span class="line-through text-red-600">
+       R$15
+      </span>
+      por:
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Sobrancelha Navalha', 10)">
+      R$10
+      <span class="ml-0.5">
+       AGENDAR
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de pigmentação lavável" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/191164a3-1a1d-4915-86fd-32c8b0a40129.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Pigmentação
+      <br/>
+      Lavável
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      R$15
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Pigmentação Lavável', 15)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de pézinho de cabelo" class="w-12 h-12 object-contain" src="/images/pezinho-detalhes.png"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Pézinho
+      <br/>
+      de Cabelo
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      De
+      <span class="line-through text-red-600">
+       R$15
+      </span>
+      por:
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Pézinho de Cabelo', 10)">
+      R$10
+      <span class="ml-0.5">
+       AGENDAR
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de tintura coloração" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/747ce694-5340-410e-e753-3c31e7743c9a.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Tintura
+      <br/>
+      Coloração
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      R$25
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Tintura Coloração', 25)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de hidratação capilar" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/0aa1f941-2f5c-47fb-614c-804dae917a85.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Hidratação
+      <br/>
+      Capilar
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      R$10
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Hidratação Capilar', 10)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de platinado nevou" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/363e5be0-d3a6-42ab-5f84-48d9b7eccf17.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Platinado
+      <br/>
+      Nevou
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      A partir:
+      <span>
+       R$120,00
+      </span>
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Platinado Nevou', 120)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de luzes masculino" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/c9966474-42da-4492-3c17-cb97f973cc65.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Luzes
+      <br/>
+      Masculino
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      A partir:
+      <span>
+       R$70,00
+      </span>
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Luzes Masculino', 70)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de progressiva masculino" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/2fa062fb-2fec-4ed3-b184-3ba66e110ff5.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Progressiva
+      <br/>
+      Masculino
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      A partir:
+      <span>
+       R$70,00
+      </span>
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Progressiva Masculino', 70)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de relaxamento terapia" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/a7343252-896e-4d3e-662e-1b982c7fd3b0.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Relaxamento
+      <br/>
+      Terapia
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      A partir:
+      <span>
+       R$30,00
+      </span>
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Relaxamento Terapia', 30)">
+      AGENDAR
+     </button>
+    </div>
+    <div class="bg-white rounded-lg p-1.5 w-24 flex flex-col items-center gap-0.5 shrink-0 relative cursor-pointer">
+     <img alt="Ícone de limpeza de pele" class="w-12 h-12 object-contain" height="80" src="https://storage.googleapis.com/a1aa/image/0ddbf53a-da77-4422-a7f6-8b70564c68fe.jpg" width="80"/>
+     <p class="text-center font-semibold text-black text-[9px] leading-tight mt-1 mb-1">
+      Limpeza
+      <br/>
+      de Pele
+     </p>
+     <p class="text-center text-[7px] text-gray-600 leading-tight mb-1">
+      R$25
+     </p>
+     <button class="w-full rounded-full text-[8px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1" onclick="showSchedule('Limpeza de Pele', 25)">
+      AGENDAR
+     </button>
+    </div>
+   </div>
+  </section>
+  <!-- Barber Shop Items -->
+  <section class="mx-2 mt-6 space-y-2">
+   <div>
+    <p class="font-bold text-black text-xs leading-tight">
+     Escolha itens do Barber Shop:
+    </p>
+    <p class="font-extrabold text-gray-600 text-sm leading-tight">
+     O melhor do estilo Streetwear
+    </p>
+   </div>
+   <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+    <div class="bg-white rounded-xl p-2 w-28 flex flex-col items-center gap-2 shrink-0 cursor-pointer" onclick="addToCart('Camisa Vans', 60)">
+     <div class="w-full h-16 bg-gray-300 rounded-3xl flex items-center justify-center font-semibold text-black text-xs">
+      <img alt="Camisa Vans" class="w-24 h-16 object-contain rounded-3xl" src="/images/furia.png"/>
+     </div>
+     <p class="font-semibold text-black text-center text-xs leading-tight">
+      Camisa Vans
+     </p>
+     <button class="w-full rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1">
+      R$60
+      <span class="ml-1">
+       Adicionar
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-xl p-2 w-28 flex flex-col items-center gap-2 shrink-0 cursor-pointer" onclick="addToCart('Manga Longa Hubz', 60)">
+     <div class="w-full h-16 bg-gray-300 rounded-3xl flex items-center justify-center font-semibold text-black text-xs">
+      <img alt="Manga Longa Hubz" class="w-24 h-16 object-contain rounded-3xl" src="/images/hubzg.png"/>
+     </div>
+     <p class="font-semibold text-black text-center text-xs leading-tight">
+      Manga Longa Hubz
+     </p>
+     <button class="w-full rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1">
+      R$60
+      <span class="ml-1">
+       Adicionar
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-xl p-2 w-28 flex flex-col items-center gap-2 shrink-0 cursor-pointer" onclick="addToCart('Camisa EFC', 60)">
+     <div class="w-full h-16 bg-gray-300 rounded-3xl flex items-center justify-center font-semibold text-black text-xs">
+      <img alt="Camisa EFC" class="w-24 h-16 object-contain rounded-3xl" src="/images/hubzg.png"/>
+     </div>
+     <p class="font-semibold text-black text-center text-xs leading-tight">
+      Camisa EFC
+     </p>
+     <button class="w-full rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1">
+      R$60
+      <span class="ml-1">
+       Adicionar
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-xl p-2 w-28 flex flex-col items-center gap-2 shrink-0 cursor-pointer" onclick="addToCart('Boné Streetwear', 45)">
+     <div class="w-full h-16 bg-gray-300 rounded-3xl flex items-center justify-center font-semibold text-black text-xs">
+      <img alt="Boné Streetwear" class="w-24 h-16 object-contain rounded-3xl" height="64" src="https://storage.googleapis.com/a1aa/image/bd34a307-1ee8-4e6f-e3c4-b3e5dc62e5a5.jpg" width="96"/>
+     </div>
+     <p class="font-semibold text-black text-center text-xs leading-tight">
+      Boné Streetwear
+     </p>
+     <button class="w-full rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1">
+      R$45
+      <span class="ml-1">
+       Adicionar
+      </span>
+     </button>
+    </div>
+    <div class="bg-white rounded-xl p-2 w-28 flex flex-col items-center gap-2 shrink-0 cursor-pointer" onclick="addToCart('Mochila Urbana', 80)">
+     <div class="w-full h-16 bg-gray-300 rounded-3xl flex items-center justify-center font-semibold text-black text-xs">
+      <img alt="Mochila Urbana" class="w-24 h-16 object-contain rounded-3xl" height="64" src="https://storage.googleapis.com/a1aa/image/cab3210b-453c-4e5e-2ede-fa0dd40b08a2.jpg" width="96"/>
+     </div>
+     <p class="font-semibold text-black text-center text-xs leading-tight">
+      Mochila Urbana
+     </p>
+     <button class="w-full rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 py-1">
+      R$80
+      <span class="ml-1">
+       Adicionar
+      </span>
+     </button>
+    </div>
+   </div>
+  </section>
+  <!-- Promo Items -->
+  <section class="mx-2 mt-6 space-y-2 pb-24">
+   <div>
+    <p class="font-bold text-black text-xs leading-tight">
+     Outros itens na Promoção:
+    </p>
+    <p class="font-extrabold text-gray-600 text-sm leading-tight flex items-center gap-1">
+     Tudo que você precisa pra deixar na régua
+     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <line x1="4" x2="20" y1="20" y2="4">
+      </line>
+      <polyline points="20 4 14 4 20 10">
+      </polyline>
+      <line x1="14" x2="20" y1="10" y2="4">
+      </line>
+     </svg>
+    </p>
+   </div>
+   <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+    <!-- Repeat 5 promo items -->
+    <div class="bg-white rounded-lg w-16 flex flex-col shrink-0 cursor-pointer" onclick="addToCart('Pomada Cabelo 70g', 35)">
+     <div class="bg-orange-400 text-white text-[8px] font-bold text-center py-0.5 rounded-t-lg">
+      OFERTA R$ 35
+     </div>
+     <div class="h-16 bg-white flex items-center justify-center font-semibold text-black text-[8px]">
+      <img alt="Pomada Cabelo 70g" class="w-14 h-16 object-contain" src="/images/mp.png"/>
+     </div>
+     <div class="px-1 pt-0.5 pb-0.5">
+      <p class="text-[6px] font-semibold text-black text-center leading-tight">
+       Pomada Cabelo 70g
+      </p>
+      <p class="text-[5px] text-gray-400 text-center leading-tight">
+       Entrega R$2 por KM.
+      </p>
+     </div>
+     <button class="self-end mr-1 mb-1 rounded-full text-[7px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 px-1.5 py-0.5">
+      Adicionar
+     </button>
+    </div>
+    <div class="bg-white rounded-lg w-16 flex flex-col shrink-0 cursor-pointer" onclick="addToCart('Pomada Cabelo 70g', 35)">
+     <div class="bg-orange-400 text-white text-[8px] font-bold text-center py-0.5 rounded-t-lg">
+      OFERTA R$ 35
+     </div>
+     <div class="h-16 bg-white flex items-center justify-center font-semibold text-black text-[8px]">
+      <img alt="Pomada Cabelo 70g" class="w-14 h-16 object-contain" src="/images/mp.png"/>
+     </div>
+     <div class="px-1 pt-0.5 pb-0.5">
+      <p class="text-[6px] font-semibold text-black text-center leading-tight">
+       Pomada Cabelo 70g
+      </p>
+      <p class="text-[5px] text-gray-400 text-center leading-tight">
+       Entrega R$2 por KM.
+      </p>
+     </div>
+     <button class="self-end mr-1 mb-1 rounded-full text-[7px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 px-1.5 py-0.5">
+      Adicionar
+     </button>
+    </div>
+    <div class="bg-white rounded-lg w-16 flex flex-col shrink-0 cursor-pointer" onclick="addToCart('Pomada Cabelo 70g', 35)">
+     <div class="bg-orange-400 text-white text-[8px] font-bold text-center py-0.5 rounded-t-lg">
+      OFERTA R$ 35
+     </div>
+     <div class="h-16 bg-white flex items-center justify-center font-semibold text-black text-[8px]">
+      <img alt="Pomada Cabelo 70g" class="w-14 h-16 object-contain" src="/images/mp.png"/>
+     </div>
+     <div class="px-1 pt-0.5 pb-0.5">
+      <p class="text-[6px] font-semibold text-black text-center leading-tight">
+       Pomada Cabelo 70g
+      </p>
+      <p class="text-[5px] text-gray-400 text-center leading-tight">
+       Entrega R$2 por KM.
+      </p>
+     </div>
+     <button class="self-end mr-1 mb-1 rounded-full text-[7px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 px-1.5 py-0.5">
+      Adicionar
+     </button>
+    </div>
+    <div class="bg-white rounded-lg w-16 flex flex-col shrink-0 cursor-pointer" onclick="addToCart('Pomada Cabelo 70g', 35)">
+     <div class="bg-orange-400 text-white text-[8px] font-bold text-center py-0.5 rounded-t-lg">
+      OFERTA R$ 35
+     </div>
+     <div class="h-16 bg-white flex items-center justify-center font-semibold text-black text-[8px]">
+      <img alt="Pomada Cabelo 70g" class="w-14 h-16 object-contain" src="/images/mp.png"/>
+     </div>
+     <div class="px-1 pt-0.5 pb-0.5">
+      <p class="text-[6px] font-semibold text-black text-center leading-tight">
+       Pomada Cabelo 70g
+      </p>
+      <p class="text-[5px] text-gray-400 text-center leading-tight">
+       Entrega R$2 por KM.
+      </p>
+     </div>
+     <button class="self-end mr-1 mb-1 rounded-full text-[7px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 px-1.5 py-0.5">
+      Adicionar
+     </button>
+    </div>
+    <div class="bg-white rounded-lg w-16 flex flex-col shrink-0 cursor-pointer" onclick="addToCart('Pomada Cabelo 70g', 35)">
+     <div class="bg-orange-400 text-white text-[8px] font-bold text-center py-0.5 rounded-t-lg">
+      OFERTA R$ 35
+     </div>
+     <div class="h-16 bg-white flex items-center justify-center font-semibold text-black text-[8px]">
+      <img alt="Pomada Cabelo 70g" class="w-14 h-16 object-contain" src="/images/mp.png"/>
+     </div>
+     <div class="px-1 pt-0.5 pb-0.5">
+      <p class="text-[6px] font-semibold text-black text-center leading-tight">
+       Pomada Cabelo 70g
+      </p>
+      <p class="text-[5px] text-gray-400 text-center leading-tight">
+       Entrega R$2 por KM.
+      </p>
+     </div>
+     <button class="self-end mr-1 mb-1 rounded-full text-[7px] font-bold text-white bg-gradient-to-r from-cyan-600 to-lime-400 px-1.5 py-0.5">
+      Adicionar
+     </button>
+    </div>
+   </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="pageFooter" class="bg-black fixed bottom-0 left-0 w-full flex items-center justify-end px-4 py-2 rounded-t-3xl gap-3 text-sm transition-opacity duration-300">
+   <button id="clearCartBtn" class="icon-button" title="Limpar carrinho" aria-label="Limpar carrinho" type="button">
+    <i class="fas fa-trash-alt"></i>
+   </button>
+   <div class="cart-summary">
+    <div id="cartItemsCount" class="truncate">
+     Itens: 0
+    </div>
+    <div id="cartTotalPrice" class="truncate">
+     R$: 00,00
+    </div>
+   </div>
+   <button id="viewCartBtn" class="bg-gradient-to-r from-cyan-600 to-lime-400 text-white font-bold rounded-full px-4 py-2 whitespace-nowrap shrink-0" type="button">
+    Ver Carrinho
+   </button>
+  </footer>
+
+  <script>
+   // Cart data
+   const cart = [];
+
+   // Format price to BRL
+   function formatPrice(value) {
+    return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+   }
+
+   // Update cart UI
+   function updateCartUI() {
+    const countEl = document.getElementById("cartCount");
+    const countFooterEl = document.getElementById("cartItemsCount");
+    const totalEl = document.getElementById("cartTotalPrice");
+    const totalSidebarEl = document.getElementById("cartTotal");
+    const cartItemsEl = document.getElementById("cartItems");
+    const footerEl = document.getElementById("pageFooter");
+    const sidebar = document.getElementById("cartSidebar");
+
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+    countEl.textContent = totalItems;
+    countFooterEl.textContent = `Itens: ${totalItems}`;
+    totalEl.textContent = `R$: ${totalPrice.toFixed(2).replace(".", ",")}`;
+    totalSidebarEl.textContent = `Total: ${formatPrice(totalPrice)}`;
+
+    // Render cart items in sidebar
+    if (cart.length === 0) {
+     cartItemsEl.innerHTML = `<p class="text-gray-400 text-center">Seu carrinho está vazio.</p>`;
+    } else {
+     cartItemsEl.innerHTML = "";
+     cart.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "cart-item flex justify-between border-b border-gray-700 pb-2";
+      div.innerHTML = `
+        <div>
+          <span class="cart-item-name">${item.name}</span><br/>
+          <small class="text-gray-300">${item.schedule || ""}</small>
+          <span class="cart-item-qty"> x${item.quantity}</span>
+        </div>
+        <div class="cart-item-price">${formatPrice(item.price * item.quantity)}</div>
+      `;
+      cartItemsEl.appendChild(div);
+     });
+    }
+
+    // Hide footer if sidebar open
+    if (sidebar.classList.contains("open")) {
+     footerEl.style.opacity = "0";
+     footerEl.style.pointerEvents = "none";
+    } else {
+     footerEl.style.opacity = "1";
+     footerEl.style.pointerEvents = "auto";
+    }
+   }
+
+   // Show splash
+   function showSplash() {
+    const splash = document.getElementById("splashOverlay");
+    splash.classList.add("show");
+    setTimeout(() => {
+     splash.classList.remove("show");
+    }, 1000);
+   }
+
+   // Add item to cart (no auto open sidebar)
+   function addToCart(name, price, schedule = "") {
+    // Check if item with same name and schedule exists
+    const existingItem = cart.find(item => item.name === name && item.schedule === schedule);
+    if (existingItem) {
+     existingItem.quantity++;
+    } else {
+     cart.push({ name, price, quantity: 1, schedule });
+    }
+    updateCartUI();
+    showSplash();
+   }
+
+   // Show schedule modal with available dates and times and status colors horizontally scrollable
+   function showSchedule(name, price) {
+    const scheduleModal = document.getElementById("scheduleModal");
+    const scheduleList = document.getElementById("scheduleList");
+
+    // Compact available dates and times with status: 'available', 'booked', 'busy'
+    // Changed 'busy' to blue and status text updated accordingly
+    const availableSlots = [
+     { slot: "2024-06-01 09:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-01 09:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-01 10:00", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-01 10:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-01 11:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-01 11:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-01 14:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-01 14:30", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-01 15:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-01 15:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-02 09:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 09:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 10:00", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-02 10:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-02 11:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 11:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 13:00", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-02 13:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 14:00", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-02 14:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 15:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-02 15:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-03 09:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 09:30", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-03 10:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 10:30", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-03 11:00", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 11:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 14:00", status: "busy", statusText: "cliente na loja" },
+     { slot: "2024-06-03 14:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 15:00", status: "booked", statusText: "indisponível" },
+     { slot: "2024-06-03 15:30", status: "available", statusText: "disponível" },
+     { slot: "2024-06-03 16:00", status: "available", statusText: "disponível" }
+    ];
+
+    // Sort slots by date/time ascending (closest first)
+    availableSlots.sort((a, b) => new Date(a.slot) - new Date(b.slot));
+
+    // Clear previous list
+    scheduleList.innerHTML = "";
+
+    // Populate list with available slots and status colors + status text
+    availableSlots.forEach(({ slot, status, statusText }) => {
+     const li = document.createElement("li");
+     // Format date/time to DD/MM HH:mm
+     const dt = new Date(slot);
+     const formatted = dt.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + " " + dt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+     li.classList.add(status);
+     li.tabIndex = 0;
+     li.setAttribute("role", "button");
+
+     // Create main text and status text elements
+     const mainText = document.createElement("span");
+     mainText.textContent = formatted;
+     const statusSpan = document.createElement("span");
+     statusSpan.className = "status-text";
+     statusSpan.textContent = statusText;
+
+     li.appendChild(mainText);
+     li.appendChild(statusSpan);
+
+     if (status === "available") {
+      li.addEventListener("click", () => {
+       // On selecting an available slot, add to cart with schedule info and close modal
+       addToCart(name, price, formatted);
+       alert(`Agendado: ${name} para ${formatted}`);
+       closeSchedule();
+      });
+      li.addEventListener("keydown", (e) => {
+       if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        li.click();
+       }
+      });
+     } else {
+      // For booked or busy slots, disable click
+      li.style.cursor = "not-allowed";
+      li.setAttribute("aria-disabled", "true");
+     }
+     scheduleList.appendChild(li);
+    });
+
+    // Show modal
+    scheduleModal.classList.add("show");
+    scheduleModal.focus();
+   }
+
+   // Close schedule modal
+   function closeSchedule() {
+    const scheduleModal = document.getElementById("scheduleModal");
+    scheduleModal.classList.remove("show");
+   }
+
+   // Close schedule modal button
+   document.getElementById("closeScheduleBtn").addEventListener("click", closeSchedule);
+
+   // Close modal on outside click
+   document.getElementById("scheduleModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+     closeSchedule();
+    }
+   });
+
+   // Cart icon click to toggle sidebar
+   document.getElementById("cartIcon").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    if (sidebar.classList.contains("open")) {
+     sidebar.classList.remove("open");
+     overlay.classList.remove("show");
+     footerEl.style.opacity = "1";
+     footerEl.style.pointerEvents = "auto";
+    } else {
+     sidebar.classList.add("open");
+     overlay.classList.add("show");
+     footerEl.style.opacity = "0";
+     footerEl.style.pointerEvents = "none";
+     sidebar.focus();
+    }
+   });
+
+   // Close sidebar
+   document.getElementById("closeCartBtn").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+    footerEl.style.opacity = "1";
+    footerEl.style.pointerEvents = "auto";
+   });
+
+   // Close sidebar on overlay click
+   document.getElementById("sidebarOverlay").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+    footerEl.style.opacity = "1";
+    footerEl.style.pointerEvents = "auto";
+   });
+
+   // View Cart button toggles sidebar
+   document.getElementById("viewCartBtn").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    if (sidebar.classList.contains("open")) {
+     sidebar.classList.remove("open");
+     overlay.classList.remove("show");
+     footerEl.style.opacity = "1";
+     footerEl.style.pointerEvents = "auto";
+    } else {
+     sidebar.classList.add("open");
+     overlay.classList.add("show");
+     footerEl.style.opacity = "0";
+     footerEl.style.pointerEvents = "none";
+     sidebar.focus();
+    }
+   });
+
+   // Checkout button placeholder
+   document.getElementById("checkoutBtn").addEventListener("click", () => {
+    alert("Finalizar compra - funcionalidade não implementada.");
+   });
+
+   // Clear cart function
+   function clearCart() {
+    if (confirm("Tem certeza que deseja limpar o carrinho?")) {
+     cart.length = 0;
+     updateCartUI();
+    }
+   }
+
+   // Clear cart button event
+   const clearCartBtn = document.getElementById("clearCartBtn");
+   clearCartBtn.addEventListener("click", clearCart);
+   clearCartBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+     e.preventDefault();
+     clearCart();
+    }
+   });
+
+   // Initialize cart UI
+   updateCartUI();
+  </script>
+ </body>
+</html>
