@@ -756,81 +756,6 @@
    </button>
   </footer>
   <script>
-   // Simulated JSON data inside code
-   const itensData = {
-    navButtons: [
-      { text: "Serviços", icon: "/images/serviço.png" },
-      { text: "Loja", icon: "/images/Loja.png" },
-      { text: "Agendamentos", icon: "/images/Agendar.png" },
-      { text: "Planos", icon: "/images/Planos.png" }
-    ],
-    services: [
-      { name: "Corte Masculino", image: "/images/corte-masculino.png", oldPrice: 35, price: 30 },
-      { name: "Barba e Bigode", image: "/images/barba-bigode.png", oldPrice: 35, price: 30 },
-      { name: "Depilação (Nariz e Orelha)", image: "https://storage.googleapis.com/a1aa/image/2dfecabd-21d8-427f-36d8-c494e059a34c.jpg", oldPrice: 20, price: 20 },
-      { name: "Sobrancelha Navalha", image: "/images/sobrancelha.png", oldPrice: 15, price: 10 },
-      { name: "Pigmentação Lavável", image: "https://storage.googleapis.com/a1aa/image/191164a3-1a1d-4915-86fd-32c8b0a40129.jpg", oldPrice: 15, price: 15 },
-      { name: "Pézinho de Cabelo", image: "/images/pezinho-detalhes.png", oldPrice: 15, price: 10 },
-      { name: "Tintura Coloração", image: "https://storage.googleapis.com/a1aa/image/747ce694-5340-410e-e753-3c31e7743c9a.jpg", oldPrice: 25, price: 25 },
-      { name: "Hidratação Capilar", image: "https://storage.googleapis.com/a1aa/image/0aa1f941-2f5c-47fb-614c-804dae917a85.jpg", oldPrice: 10, price: 10 },
-      { name: "Platinado Nevou", image: "https://storage.googleapis.com/a1aa/image/363e5be0-d3a6-42ab-5f84-48d9b7eccf17.jpg", oldPrice: 120, price: 120 },
-      { name: "Luzes Masculino", image: "https://storage.googleapis.com/a1aa/image/c9966474-42da-4492-3c17-cb97f973cc65.jpg", oldPrice: 70, price: 70 },
-      { name: "Progressiva Masculino", image: "https://storage.googleapis.com/a1aa/image/2fa062fb-2fec-4ed3-b184-3ba66e110ff5.jpg", oldPrice: 70, price: 70 },
-      { name: "Relaxamento Terapia", image: "https://storage.googleapis.com/a1aa/image/a7343252-896e-4d3e-662e-1b982c7fd3b0.jpg", oldPrice: 30, price: 30 },
-      { name: "Limpeza de Pele", image: "https://storage.googleapis.com/a1aa/image/0ddbf53a-da77-4422-a7f6-8b70564c68fe.jpg", oldPrice: 25, price: 25 }
-    ],
-    barberShop: [
-      { name: "Camisa Vans", image: "/images/furia.png", price: 60 },
-      { name: "Manga Longa Hubz", image: "/images/hubzg.png", price: 60 },
-      { name: "Camisa EFC", image: "/images/hubzg.png", price: 60 },
-      { name: "Boné Streetwear", image: "https://storage.googleapis.com/a1aa/image/bd34a307-1ee8-4e6f-e3c4-b3e5dc62e5a5.jpg", price: 45 },
-      { name: "Mochila Urbana", image: "https://storage.googleapis.com/a1aa/image/cab3210b-453c-4e5e-2ede-fa0dd40b08a2.jpg", price: 80 }
-    ],
-    promo: [
-      { name: "Pomada Cabelo 70g", image: "/images/mp.png", price: 35 },
-      { name: "Pomada Cabelo 70g", image: "/images/mp.png", price: 35 },
-      { name: "Pomada Cabelo 70g", image: "/images/mp.png", price: 35 },
-      { name: "Pomada Cabelo 70g", image: "/images/mp.png", price: 35 },
-      { name: "Pomada Cabelo 70g", image: "/images/mp.png", price: 35 }
-    ]
-   };
-
-   const agendamentoData = [
-    { slot: "2024-06-01 09:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-01 09:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-01 10:00", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-01 10:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-01 11:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-01 11:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-01 14:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-01 14:30", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-01 15:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-01 15:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-02 09:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 09:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 10:00", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-02 10:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-02 11:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 11:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 13:00", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-02 13:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 14:00", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-02 14:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 15:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-02 15:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-03 09:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 09:30", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-03 10:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 10:30", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-03 11:00", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 11:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 14:00", status: "busy", statusText: "cliente na loja" },
-    { slot: "2024-06-03 14:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 15:00", status: "booked", statusText: "indisponível" },
-    { slot: "2024-06-03 15:30", status: "available", statusText: "disponível" },
-    { slot: "2024-06-03 16:00", status: "available", statusText: "disponível" }
-   ];
-
    // Cart data
    const cart = [];
 
@@ -927,12 +852,29 @@
     }
    });
 
-   // Show schedule modal with data from simulated JSON
+   // Fetch JSON data from external files
+   async function fetchData(url) {
+    try {
+     const response = await fetch(url);
+     if (!response.ok) throw new Error('Erro ao carregar ' + url);
+     return await response.json();
+    } catch (error) {
+     console.error(error);
+     return null;
+    }
+   }
+
+   // Show schedule modal with data from JSON file
    async function showSchedule(name, price) {
     const scheduleModal = document.getElementById("scheduleModal");
     const scheduleList = document.getElementById("scheduleList");
 
-    const data = agendamentoData;
+    // Fetch agendamento data from JSON file
+    const data = await fetchData('agendamento.json');
+    if (!data) {
+     alert('Erro ao carregar os horários de agendamento.');
+     return;
+    }
 
     // Sort slots by date/time ascending (closest first)
     data.sort((a, b) => new Date(a.slot) - new Date(b.slot));
@@ -1003,10 +945,15 @@
    });
 
    // Render navigation buttons
-   function renderNavButtons(buttons) {
+   async function renderNavButtons() {
     const nav = document.getElementById('navButtons');
+    const data = await fetchData('itens.json');
+    if (!data) {
+     alert('Erro ao carregar os botões de navegação.');
+     return;
+    }
     nav.innerHTML = '';
-    buttons.forEach(btn => {
+    data.navButtons.forEach(btn => {
      const button = document.createElement('button');
      button.className = 'flex items-center gap-1 bg-black rounded-full px-1.5 py-1 min-w-[70px] shrink-0';
      if (btn.text.length > 8) button.classList.add('min-w-[90px]');
@@ -1034,96 +981,106 @@
    }
 
    // Render cards for a section
-   function renderCards(containerId, items, isService = false) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    items.forEach(item => {
+   async function renderCards() {
+    const servicesContainer = document.getElementById('servicesContainer');
+    const barberShopContainer = document.getElementById('barberShopContainer');
+    const promoContainer = document.getElementById('promoContainer');
+    const data = await fetchData('itens.json');
+    if (!data) {
+     alert('Erro ao carregar os itens.');
+     return;
+    }
+    servicesContainer.innerHTML = '';
+    data.services.forEach(item => {
      const card = document.createElement('div');
-     if (containerId === 'servicesContainer') {
-      card.className = 'bg-white rounded-xl p-3 w-28 flex flex-col items-center gap-1 cursor-pointer h-28';
-      // Image
-      const img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.name;
-      img.className = 'w-20 h-20 object-cover rounded-none';
-      card.appendChild(img);
-      // Name
-      const pName = document.createElement('h3');
-      pName.className = 'font-bold text-[9px] text-center uppercase tracking-wider truncate';
-      pName.textContent = item.name;
-      card.appendChild(pName);
-      // Price info
-      const pPriceInfo = document.createElement('p');
-      pPriceInfo.className = 'price-info text-gray-500 text-[7px] text-center mt-[-0.2rem] mb-0';
-      pPriceInfo.innerHTML = `de <span class="line-through text-red-600 text-[7px] font-semibold">R$${item.oldPrice}</span> por:`;
-      card.appendChild(pPriceInfo);
-      // Button AGENDAR
-      const btn = document.createElement('button');
-      btn.className = 'text-[8px] font-bold rounded-full px-3 py-1 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-full uppercase tracking-wider';
-      btn.type = 'button';
-      btn.textContent = `R$${item.price} AGENDAR`;
-      btn.addEventListener('click', () => showSchedule(item.name, item.price));
-      card.appendChild(btn);
-     } else if (containerId === 'barberShopContainer') {
-      card.className = 'bg-white rounded-xl p-4 w-40 flex flex-col items-center gap-2 cursor-pointer';
-      // Image container
-      const imgContainer = document.createElement('div');
-      imgContainer.className = 'w-full h-28 rounded-3xl bg-gray-300 flex items-center justify-center font-bold text-black text-sm uppercase tracking-wider truncate max-w-xs';
-      const img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.name;
-      img.className = 'max-w-full max-h-full object-contain rounded-3xl';
-      imgContainer.appendChild(img);
-      card.appendChild(imgContainer);
-      // Name
-      const pName = document.createElement('h3');
-      pName.className = 'font-bold text-sm text-center uppercase tracking-wider truncate max-w-xs';
-      pName.textContent = item.name;
-      card.appendChild(pName);
-      // Button Adicionar
-      const btn = document.createElement('button');
-      btn.className = 'text-sm font-bold rounded-full px-5 py-1 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-full uppercase tracking-wider';
-      btn.type = 'button';
-      btn.textContent = `R$${item.price} Adicionar`;
-      btn.addEventListener('click', () => addToCart(item.name, item.price));
-      card.appendChild(btn);
-     } else if (containerId === 'promoContainer') {
-      card.className = 'bg-white rounded-xl w-28 flex flex-col items-center gap-1 cursor-pointer relative aspect-square';
-      // Orange offer banner
-      const offerBanner = document.createElement('div');
-      offerBanner.className = 'bg-orange-400 w-full text-white text-xs font-bold text-center py-1 rounded-t-xl absolute top-0 left-0 right-0 uppercase tracking-wider';
-      offerBanner.textContent = 'OFERTA R$ 35';
-      card.appendChild(offerBanner);
-      // Image container
-      const imgContainer = document.createElement('div');
-      imgContainer.className = 'w-full flex-grow bg-white rounded-b-xl flex items-center justify-center font-bold text-black text-xs mt-5 uppercase tracking-wider truncate max-w-xs';
-      const img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.name;
-      img.className = 'max-w-full max-h-full object-contain';
-      imgContainer.appendChild(img);
-      card.appendChild(imgContainer);
-      // Name
-      const pName = document.createElement('div');
-      pName.className = 'text-[8px] text-black font-semibold mt-1 px-1 text-center uppercase tracking-wider truncate max-w-xs';
-      pName.textContent = item.name;
-      card.appendChild(pName);
-      // Delivery info
-      const deliveryInfo = document.createElement('div');
-      deliveryInfo.className = 'text-[6px] text-gray-500 px-1 text-center lowercase tracking-normal truncate max-w-xs';
-      deliveryInfo.textContent = 'Entrega R$2 por KM.';
-      card.appendChild(deliveryInfo);
-      // Button Adicionar
-      const btn = document.createElement('button');
-      btn.className = 'mb-2 text-[10px] font-bold rounded-full px-3 py-0.5 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-20 uppercase tracking-wider';
-      btn.type = 'button';
-      btn.textContent = 'Adicionar';
-      btn.addEventListener('click', () => addToCart(item.name, item.price));
-      card.appendChild(btn);
-     }
-     container.appendChild(card);
+     card.className = 'bg-white rounded-xl p-3 w-28 flex flex-col items-center gap-1 cursor-pointer h-28';
+     const img = document.createElement('img');
+     img.src = item.image;
+     img.alt = item.name;
+     img.className = 'w-20 h-20 object-cover rounded-none';
+     card.appendChild(img);
+     const pName = document.createElement('h3');
+     pName.className = 'font-bold text-[9px] text-center uppercase tracking-wider truncate';
+     pName.textContent = item.name;
+     card.appendChild(pName);
+     const pPriceInfo = document.createElement('p');
+     pPriceInfo.className = 'price-info text-gray-500 text-[7px] text-center mt-[-0.2rem] mb-0';
+     pPriceInfo.innerHTML = `de <span class="line-through text-red-600 text-[7px] font-semibold">R$${item.oldPrice}</span> por:`;
+     card.appendChild(pPriceInfo);
+     const btn = document.createElement('button');
+     btn.className = 'text-[8px] font-bold rounded-full px-3 py-1 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-full uppercase tracking-wider';
+     btn.type = 'button';
+     btn.textContent = `R$${item.price} AGENDAR`;
+     btn.addEventListener('click', () => showSchedule(item.name, item.price));
+     card.appendChild(btn);
+     servicesContainer.appendChild(card);
+    });
+
+    barberShopContainer.innerHTML = '';
+    data.barberShop.forEach(item => {
+     const card = document.createElement('div');
+     card.className = 'bg-white rounded-xl p-4 w-40 flex flex-col items-center gap-2 cursor-pointer';
+     const imgContainer = document.createElement('div');
+     imgContainer.className = 'w-full h-28 rounded-3xl bg-gray-300 flex items-center justify-center font-bold text-black text-sm uppercase tracking-wider truncate max-w-xs';
+     const img = document.createElement('img');
+     img.src = item.image;
+     img.alt = item.name;
+     img.className = 'max-w-full max-h-full object-contain rounded-3xl';
+     imgContainer.appendChild(img);
+     card.appendChild(imgContainer);
+     const pName = document.createElement('h3');
+     pName.className = 'font-bold text-sm text-center uppercase tracking-wider truncate max-w-xs';
+     pName.textContent = item.name;
+     card.appendChild(pName);
+     const btn = document.createElement('button');
+     btn.className = 'text-sm font-bold rounded-full px-5 py-1 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-full uppercase tracking-wider';
+     btn.type = 'button';
+     btn.textContent = `R$${item.price} Adicionar`;
+     btn.addEventListener('click', () => addToCart(item.name, item.price));
+     card.appendChild(btn);
+     barberShopContainer.appendChild(card);
+    });
+
+    promoContainer.innerHTML = '';
+    data.promo.forEach(item => {
+     const card = document.createElement('div');
+     card.className = 'bg-white rounded-xl w-28 flex flex-col items-center gap-1 cursor-pointer relative aspect-square';
+     const offerBanner = document.createElement('div');
+     offerBanner.className = 'bg-orange-400 w-full text-white text-xs font-bold text-center py-1 rounded-t-xl absolute top-0 left-0 right-0 uppercase tracking-wider';
+     offerBanner.textContent = 'OFERTA R$ 35';
+     card.appendChild(offerBanner);
+     const imgContainer = document.createElement('div');
+     imgContainer.className = 'w-full flex-grow bg-white rounded-b-xl flex items-center justify-center font-bold text-black text-xs mt-5 uppercase tracking-wider truncate max-w-xs';
+     const img = document.createElement('img');
+     img.src = item.image;
+     img.alt = item.name;
+     img.className = 'max-w-full max-h-full object-contain';
+     imgContainer.appendChild(img);
+     card.appendChild(imgContainer);
+     const pName = document.createElement('div');
+     pName.className = 'text-[8px] text-black font-semibold mt-1 px-1 text-center uppercase tracking-wider truncate max-w-xs';
+     pName.textContent = item.name;
+     card.appendChild(pName);
+     const deliveryInfo = document.createElement('div');
+     deliveryInfo.className = 'text-[6px] text-gray-500 px-1 text-center lowercase tracking-normal truncate max-w-xs';
+     deliveryInfo.textContent = 'Entrega R$2 por KM.';
+     card.appendChild(deliveryInfo);
+     const btn = document.createElement('button');
+     btn.className = 'mb-2 text-[10px] font-bold rounded-full px-3 py-0.5 bg-gradient-to-r from-cyan-600 to-lime-500 text-white w-20 uppercase tracking-wider';
+     btn.type = 'button';
+     btn.textContent = 'Adicionar';
+     btn.addEventListener('click', () => addToCart(item.name, item.price));
+     card.appendChild(btn);
+     promoContainer.appendChild(card);
     });
    }
+
+   // Initialize page content on load
+   window.addEventListener("DOMContentLoaded", () => {
+    renderNavButtons();
+    renderCards();
+    updateCartUI();
+   });
   </script>
  </body>
 </html>
