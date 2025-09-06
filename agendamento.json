@@ -1,4 +1,3 @@
-
 [
   { "slot": "2024-06-01 09:00", "status": "available", "statusText": "disponível" },
   { "slot": "2024-06-01 09:30", "status": "booked", "statusText": "indisponível" },
