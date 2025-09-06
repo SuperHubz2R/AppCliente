@@ -1,0 +1,154 @@
+{
+  "navButtons": [
+    {
+      "text": "Serviços",
+      "icon": "/images/serviço.png"
+    },
+    {
+      "text": "Loja",
+      "icon": "/images/Loja.png"
+    },
+    {
+      "text": "Agendamentos",
+      "icon": "/images/Agendar.png"
+    },
+    {
+      "text": "Planos",
+      "icon": "/images/Planos.png"
+    }
+  ],
+  "services": [
+    {
+      "name": "Corte Masculino",
+      "image": "/images/corte-masculino.png",
+      "oldPrice": 35,
+      "price": 30
+    },
+    {
+      "name": "Barba e Bigode",
+      "image": "/images/barba-bigode.png",
+      "oldPrice": 35,
+      "price": 30
+    },
+    {
+      "name": "Depilação (Nariz e Orelha)",
+      "image": "https://storage.googleapis.com/a1aa/image/2dfecabd-21d8-427f-36d8-c494e059a34c.jpg",
+      "oldPrice": 20,
+      "price": 20
+    },
+    {
+      "name": "Sobrancelha Navalha",
+      "image": "/images/sobrancelha.png",
+      "oldPrice": 15,
+      "price": 10
+    },
+    {
+      "name": "Pigmentação Lavável",
+      "image": "https://storage.googleapis.com/a1aa/image/191164a3-1a1d-4915-86fd-32c8b0a40129.jpg",
+      "oldPrice": 15,
+      "price": 15
+    },
+    {
+      "name": "Pézinho de Cabelo",
+      "image": "/images/pezinho-detalhes.png",
+      "oldPrice": 15,
+      "price": 10
+    },
+    {
+      "name": "Tintura Coloração",
+      "image": "https://storage.googleapis.com/a1aa/image/747ce694-5340-410e-e753-3c31e7743c9a.jpg",
+      "oldPrice": 25,
+      "price": 25
+    },
+    {
+      "name": "Hidratação Capilar",
+      "image": "https://storage.googleapis.com/a1aa/image/0aa1f941-2f5c-47fb-614c-804dae917a85.jpg",
+      "oldPrice": 10,
+      "price": 10
+    },
+    {
+      "name": "Platinado Nevou",
+      "image": "https://storage.googleapis.com/a1aa/image/363e5be0-d3a6-42ab-5f84-48d9b7eccf17.jpg",
+      "oldPrice": 120,
+      "price": 120
+    },
+    {
+      "name": "Luzes Masculino",
+      "image": "https://storage.googleapis.com/a1aa/image/c9966474-42da-4492-3c17-cb97f973cc65.jpg",
+      "oldPrice": 70,
+      "price": 70
+    },
+    {
+      "name": "Progressiva Masculino",
+      "image": "https://storage.googleapis.com/a1aa/image/2fa062fb-2fec-4ed3-b184-3ba66e110ff5.jpg",
+      "oldPrice": 70,
+      "price": 70
+    },
+    {
+      "name": "Relaxamento Terapia",
+      "image": "https://storage.googleapis.com/a1aa/image/a7343252-896e-4d3e-662e-1b982c7fd3b0.jpg",
+      "oldPrice": 30,
+      "price": 30
+    },
+    {
+      "name": "Limpeza de Pele",
+      "image": "https://storage.googleapis.com/a1aa/image/0ddbf53a-da77-4422-a7f6-8b70564c68fe.jpg",
+      "oldPrice": 25,
+      "price": 25
+    }
+  ],
+  "barberShop": [
+    {
+      "name": "Camisa Vans",
+      "image": "/images/furia.png",
+      "price": 60
+    },
+    {
+      "name": "Manga Longa Hubz",
+      "image": "/images/hubzg.png",
+      "price": 60
+    },
+    {
+      "name": "Camisa EFC",
+      "image": "/images/hubzg.png",
+      "price": 60
+    },
+    {
+      "name": "Boné Streetwear",
+      "image": "https://storage.googleapis.com/a1aa/image/bd34a307-1ee8-4e6f-e3c4-b3e5dc62e5a5.jpg",
+      "price": 45
+    },
+    {
+      "name": "Mochila Urbana",
+      "image": "https://storage.googleapis.com/a1aa/image/cab3210b-453c-4e5e-2ede-fa0dd40b08a2.jpg",
+      "price": 80
+    }
+  ],
+  "promo": [
+    {
+      "name": "Pomada Cabelo 70g",
+      "image": "/images/mp.png",
+      "price": 35
+    },
+    {
+      "name": "Pomada Cabelo 70g",
+      "image": "/images/mp.png",
+      "price": 35
+    },
+    {
+      "name": "Pomada Cabelo 70g",
+      "image": "/images/mp.png",
+      "price": 35
+    },
+    {
+      "name": "Pomada Cabelo 70g",
+      "image": "/images/mp.png",
+      "price": 35
+    },
+    {
+      "name": "Pomada Cabelo 70g",
+      "image": "/images/mp.png",
+      "price": 35
+    }
+  ]
+}
