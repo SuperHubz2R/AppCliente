@@ -363,8 +363,8 @@
   #servicesContainer > div {
     background: white;
     border-radius: 0.75rem;
-    padding: 0.5rem;
-    width: 5.5rem;
+    padding: 0.5rem 0.25rem;
+    width: 6rem;
     flex-shrink: 0;
     cursor: pointer;
     box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
@@ -374,12 +374,12 @@
     font-size: 0.5rem;
     font-weight: 600;
     text-align: center;
-    gap: 0.25rem;
-    height: 7.5rem;
+    gap: 0.15rem;
+    height: 6.5rem;
   }
   #servicesContainer > div img {
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     object-fit: cover;
     border-radius: 0;
   }
@@ -388,8 +388,12 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 5.5rem;
   }
   #servicesContainer p.price-info {
     font-size: 0.4rem;
@@ -399,6 +403,7 @@
     letter-spacing: normal;
     margin-top: -0.25rem;
     margin-bottom: 0.1rem;
+    white-space: nowrap;
   }
   #servicesContainer p.price-info span {
     color: #dc2626; /* red-600 */
@@ -682,7 +687,7 @@
      Os mais populares na DoisR
     </p>
    </div>
-   <div class="flex gap-1 overflow-x-auto scrollbar-hide pb-1" id="servicesContainer">
+   <div class="grid grid-cols-4 gap-1 overflow-x-auto scrollbar-hide pb-1" id="servicesContainer" style="min-width: auto;">
     <!-- Service cards loaded dynamically -->
    </div>
   </section>
@@ -967,7 +972,7 @@
     items.forEach(item => {
      const card = document.createElement('div');
      if (containerId === 'servicesContainer') {
-      card.className = 'bg-white rounded-xl p-3 w-28 flex flex-col items-center gap-1 cursor-pointer h-28';
+      card.className = 'bg-white rounded-xl p-3 w-24 flex flex-col items-center gap-1 cursor-pointer h-24';
       // Image
       const img = document.createElement('img');
       img.src = item.image;
