@@ -778,6 +778,66 @@
 
    // Initialize page content
    initPage();
+
+   // Cart icon click to toggle sidebar
+   document.getElementById("cartIcon").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    if (sidebar.classList.contains("open")) {
+     sidebar.classList.remove("open");
+     overlay.classList.remove("show");
+     footerEl.style.opacity = "1";
+     footerEl.style.pointerEvents = "auto";
+    } else {
+     sidebar.classList.add("open");
+     overlay.classList.add("show");
+     footerEl.style.opacity = "0";
+     footerEl.style.pointerEvents = "none";
+     sidebar.focus();
+    }
+   });
+
+   // Close sidebar
+   document.getElementById("closeCartBtn").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+    footerEl.style.opacity = "1";
+    footerEl.style.pointerEvents = "auto";
+   });
+
+   // Close sidebar on overlay click
+   document.getElementById("sidebarOverlay").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+    footerEl.style.opacity = "1";
+    footerEl.style.pointerEvents = "auto";
+   });
+
+   // View Cart button toggles sidebar
+   document.getElementById("viewCartBtn").addEventListener("click", () => {
+    const sidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const footerEl = document.getElementById("pageFooter");
+    if (sidebar.classList.contains("open")) {
+     sidebar.classList.remove("open");
+     overlay.classList.remove("show");
+     footerEl.style.opacity = "1";
+     footerEl.style.pointerEvents = "auto";
+    } else {
+     sidebar.classList.add("open");
+     overlay.classList.add("show");
+     footerEl.style.opacity = "0";
+     footerEl.style.pointerEvents = "none";
+     sidebar.focus();
+    }
+   });
   </script>
  </body>
 </html>
