@@ -365,63 +365,173 @@
   .card:hover {
     filter: brightness(0.9);
   }
+  /* Reduced spacing between sections */
+  header.bg-black {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  section.mx-2.mt-4.bg-white {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    height: 5rem !important;
+  }
+  nav#navButtons {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  section#servicesSection {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  section#barberShopSection {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  section#promoSection {
+    margin-top: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+  /* Promo cards with orange offer banner */
+  #promoContainer .card {
+    position: relative;
+    padding-top: 1.5rem;
+    min-width: 96px;
+  }
+  #promoContainer .card::before {
+    content: "OFERTA R$ 35";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fb923c; /* orange-400 */
+    color: white;
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-align: center;
+    padding: 0.2rem 0;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+  #promoContainer .card img {
+    margin-top: 0.25rem;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+  }
+  #promoContainer .card button {
+    margin-top: 0.25rem;
+  }
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 640px) {
+    header.bg-black {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    section.mx-2.mt-4.bg-white {
+      height: 4rem !important;
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+    nav#navButtons {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+    section#servicesSection {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+    section#barberShopSection {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+    section#promoSection {
+      margin-top: 0.75rem !important;
+      margin-bottom: 1rem !important;
+    }
+  }
+  @media (max-width: 400px) {
+    section.mx-2.mt-4.bg-white {
+      height: 3.5rem !important;
+    }
+  }
+  /* Logo image round and no background */
+  #logoImg {
+    border-radius: 9999px;
+    background: none !important;
+    object-fit: cover;
+  }
   </style>
  </head>
  <body class="bg-gray-200 min-h-screen flex flex-col justify-between">
   <!-- Splash overlay -->
-  <div id="splashOverlay" aria-hidden="true">
-   <img alt="Logo DoisR Barber Shop girando" src="/images/Logo.png" />
+  <div aria-hidden="true" id="splashOverlay">
+   <img alt="Logo DoisR Barber Shop girando" height="80" id="logoImg" src="/images/Logo.png" width="80"/>
   </div>
   <!-- Sidebar cart -->
-  <aside id="cartSidebar" aria-label="Carrinho de compras" role="dialog" aria-modal="true" tabindex="-1">
+  <aside aria-label="Carrinho de compras" aria-modal="true" id="cartSidebar" role="dialog" tabindex="-1">
    <header>
-    <span>Carrinho</span>
-    <button id="closeCartBtn" aria-label="Fechar carrinho">&times;</button>
+    <span>
+     Carrinho
+    </span>
+    <button aria-label="Fechar carrinho" id="closeCartBtn">
+     ×
+    </button>
    </header>
-   <div id="cartItems" tabindex="0" aria-live="polite" aria-relevant="additions removals">
-    <p class="text-gray-400 text-center">Seu carrinho está vazio.</p>
+   <div aria-live="polite" aria-relevant="additions removals" id="cartItems" tabindex="0">
+    <p class="text-gray-400 text-center">
+     Seu carrinho está vazio.
+    </p>
    </div>
-   <div id="cartTotal">Total: R$ 0,00</div>
+   <div id="cartTotal">
+    Total: R$ 0,00
+   </div>
    <footer>
-    <button id="checkoutBtn" type="button">Finalizar Compra</button>
+    <button id="checkoutBtn" type="button">
+     Finalizar Compra
+    </button>
    </footer>
   </aside>
-  <div id="sidebarOverlay" tabindex="-1"></div>
-
+  <div id="sidebarOverlay" tabindex="-1">
+  </div>
   <!-- Schedule Modal -->
-  <div id="scheduleModal" role="dialog" aria-modal="true" aria-labelledby="scheduleTitle" tabindex="-1">
+  <div aria-labelledby="scheduleTitle" aria-modal="true" id="scheduleModal" role="dialog" tabindex="-1">
    <div id="scheduleModalContent">
-    <h3 id="scheduleTitle">Selecione uma data e horário</h3>
-    <ul id="scheduleList" tabindex="0" aria-label="Lista de datas e horários disponíveis para agendamento" class="cards-container">
+    <h3 id="scheduleTitle">
+     Selecione uma data e horário
+    </h3>
+    <ul aria-label="Lista de datas e horários disponíveis para agendamento" class="cards-container" id="scheduleList" tabindex="0">
      <!-- Dates and times will be inserted here -->
     </ul>
-    <button class="closeBtn" id="closeScheduleBtn" aria-label="Fechar agendamento">Fechar</button>
+    <button aria-label="Fechar agendamento" class="closeBtn" id="closeScheduleBtn">
+     Fechar
+    </button>
    </div>
   </div>
-
   <!-- Top black header -->
   <header class="bg-black flex items-center justify-between px-2 py-1 rounded-b-3xl relative z-20">
-   <div class="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full font-bold text-black text-[10px]">
-    <img alt="Logo DoisR Barber Shop" class="w-8 h-8 object-contain" src="/images/Logo.png"/>
+   <div class="flex items-center justify-center w-10 h-10 rounded-full font-bold text-black text-[10px] overflow-hidden">
+    <img alt="Logo DoisR Barber Shop" class="w-full h-full object-cover" height="40" id="logoImg" src="/images/Logo.png" width="40"/>
    </div>
    <div class="flex items-center justify-center w-32 h-10 font-semibold text-black text-xs">
-    <img alt="Título DoisR Barber Shop" class="w-28 h-8 object-contain" src="/images/Título.png"/>
+    <img alt="Título DoisR Barber Shop" class="w-28 h-8 object-contain" height="32" src="/images/Título.png" width="112"/>
    </div>
    <div class="relative cursor-pointer text-white text-2xl" id="cartIcon" title="Ver Carrinho">
-    <i class="fas fa-shopping-cart"></i>
-    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold">0</span>
+    <i class="fas fa-shopping-cart">
+    </i>
+    <span class="absolute -top-2 -right-2 bg-red-600 rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold" id="cartCount">
+     0
+    </span>
    </div>
   </header>
   <!-- Banner -->
-  <section class="mx-2 mt-4 bg-white rounded-3xl h-20 flex items-center justify-center font-bold text-black text-xs">
-   <img alt="Banner promocional DoisR Barber Shop" class="w-full h-full object-contain rounded-3xl" src="/images/Banner.png"/>
+  <section class="mx-2 mt-2 bg-white rounded-3xl h-20 flex items-center justify-center font-bold text-black text-xs">
+   <img alt="Banner promocional DoisR Barber Shop" class="w-full h-full object-contain rounded-3xl" height="80" src="/images/Banner.png" width="320"/>
   </section>
   <!-- Navigation buttons -->
-  <nav class="flex justify-start mx-2 mt-4 gap-1 overflow-x-auto scrollbar-hide" id="navButtons">
+  <nav class="flex justify-start mx-2 mt-2 gap-1 overflow-x-auto scrollbar-hide" id="navButtons">
    <!-- Buttons loaded dynamically -->
   </nav>
   <!-- Services Section -->
-  <section class="mx-2 mt-6 space-y-1" id="servicesSection">
+  <section class="mx-2 mt-2 space-y-1" id="servicesSection">
    <div>
     <p class="font-bold text-black text-[11px] leading-tight">
      Escolha seu serviço:
@@ -435,7 +545,7 @@
    </div>
   </section>
   <!-- Barber Shop Items -->
-  <section class="mx-2 mt-6 space-y-2" id="barberShopSection">
+  <section class="mx-2 mt-2 space-y-2" id="barberShopSection">
    <div>
     <p class="font-bold text-black text-xs leading-tight">
      Escolha itens do Barber Shop:
@@ -449,17 +559,20 @@
    </div>
   </section>
   <!-- Promo Items -->
-  <section class="mx-2 mt-6 space-y-2 pb-24" id="promoSection">
+  <section class="mx-2 mt-1 space-y-2 pb-24" id="promoSection">
    <div>
     <p class="font-bold text-black text-xs leading-tight">
      Outros itens na Promoção:
     </p>
     <p class="font-extrabold text-gray-600 text-sm leading-tight flex items-center gap-1">
      Tudo que você precisa pra deixar na régua
-     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <line x1="4" x2="20" y1="20" y2="4"></line>
-      <polyline points="20 4 14 4 20 10"></polyline>
-      <line x1="14" x2="20" y1="10" y2="4"></line>
+     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <line x1="4" x2="20" y1="20" y2="4">
+      </line>
+      <polyline points="20 4 14 4 20 10">
+      </polyline>
+      <line x1="14" x2="20" y1="10" y2="4">
+      </line>
      </svg>
     </p>
    </div>
@@ -467,25 +580,24 @@
     <!-- Promo items loaded dynamically -->
    </div>
   </section>
-
   <!-- Footer -->
-  <footer id="pageFooter" class="bg-black fixed bottom-0 left-0 w-full flex items-center justify-end px-4 py-2 rounded-t-3xl gap-3 text-sm transition-opacity duration-300">
+  <footer class="bg-black fixed bottom-0 left-0 w-full flex items-center justify-end px-4 py-2 rounded-t-3xl gap-3 text-sm transition-opacity duration-300" id="pageFooter">
    <div class="cart-summary">
-    <div id="cartItemsCount" class="truncate text-white font-bold mr-4">
+    <div class="truncate text-white font-bold mr-4" id="cartItemsCount">
      Itens: 0
     </div>
-    <div id="cartTotalPrice" class="truncate text-white font-bold">
+    <div class="truncate text-white font-bold" id="cartTotalPrice">
      R$: 00,00
     </div>
    </div>
-   <button id="clearCartBtn" class="icon-button text-red-600 hover:text-red-400" title="Limpar carrinho" aria-label="Limpar carrinho" type="button">
-    <i class="fas fa-trash-alt text-2xl"></i>
+   <button aria-label="Limpar carrinho" class="icon-button text-red-600 hover:text-red-400" id="clearCartBtn" title="Limpar carrinho" type="button">
+    <i class="fas fa-trash-alt text-2xl">
+    </i>
    </button>
-   <button id="viewCartBtn" class="bg-gradient-to-r from-cyan-600 to-lime-400 text-white font-bold rounded-full px-4 py-2 whitespace-nowrap shrink-0" type="button">
+   <button class="bg-gradient-to-r from-cyan-600 to-lime-400 text-white font-bold rounded-full px-4 py-2 whitespace-nowrap shrink-0" id="viewCartBtn" type="button">
     Ver Carrinho
    </button>
   </footer>
-
   <script>
    // Cart data
    const cart = [];
@@ -696,12 +808,12 @@
      button.type = 'button';
 
      const iconDiv = document.createElement('div');
-     iconDiv.className = 'w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-[6px] font-semibold text-black';
+     iconDiv.className = 'w-6 h-6 rounded-full overflow-hidden flex items-center justify-center text-[6px] font-semibold text-black';
 
      const img = document.createElement('img');
      img.src = btn.icon;
      img.alt = `Ícone ${btn.text}`;
-     img.className = 'w-4 h-4 object-contain';
+     img.className = 'w-4 h-4 object-contain rounded-full';
 
      iconDiv.appendChild(img);
      button.appendChild(iconDiv);
@@ -727,7 +839,7 @@
      const img = document.createElement('img');
      img.src = item.image;
      img.alt = item.name;
-     img.className = 'w-12 h-12 object-contain';
+     img.className = 'w-12 h-12 object-contain rounded-full';
      card.appendChild(img);
 
      // Name
