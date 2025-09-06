@@ -528,6 +528,10 @@
       height: 3.5rem !important;
     }
   }
+  /* Make logo image round */
+  #logoImage {
+    border-radius: 9999px;
+  }
   </style>
  </head>
  <body class="bg-gray-200 min-h-screen flex flex-col justify-between">
@@ -578,7 +582,7 @@
   <!-- Top black header -->
   <header class="bg-black flex items-center justify-between px-2 py-1 rounded-b-3xl relative z-20">
    <div class="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full font-bold text-black text-[10px]">
-    <img alt="Logo DoisR Barber Shop" class="w-8 h-8 object-contain" height="32" src="https://storage.googleapis.com/a1aa/image/b909ce5d-866b-454a-1d2f-17eaf1c4ca1a.jpg" width="32"/>
+    <img alt="Logo DoisR Barber Shop" class="w-8 h-8 object-contain" height="32" id="logoImage" src="https://storage.googleapis.com/a1aa/image/b909ce5d-866b-454a-1d2f-17eaf1c4ca1a.jpg" width="32"/>
    </div>
    <div class="flex items-center justify-center w-32 h-10 font-semibold text-black text-xs">
     <img alt="Título DoisR Barber Shop" class="w-28 h-8 object-contain" height="32" src="https://storage.googleapis.com/a1aa/image/cee3df7f-cb28-4760-b588-d8cb210422c0.jpg" width="112"/>
@@ -873,7 +877,7 @@
      const img = document.createElement('img');
      img.src = btn.icon;
      img.alt = `Ícone ${btn.text}`;
-     img.className = 'w-4 h-4 object-contain';
+     img.className = 'w-4 h-4 object-contain rounded-full';
 
      iconDiv.appendChild(img);
      button.appendChild(iconDiv);
@@ -899,7 +903,7 @@
       const img = document.createElement('img');
       img.src = item.image;
       img.alt = item.name;
-      img.className = 'w-16 h-16 object-contain';
+      img.className = 'w-16 h-16 object-contain rounded-full';
       card.appendChild(img);
       // Name
       const pName = document.createElement('h3');
