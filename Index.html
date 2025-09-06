@@ -826,17 +826,17 @@
 
   <!-- Footer -->
   <footer id="pageFooter" class="bg-black fixed bottom-0 left-0 w-full flex items-center justify-end px-4 py-2 rounded-t-3xl gap-3 text-sm transition-opacity duration-300">
-   <button id="clearCartBtn" class="icon-button" title="Limpar carrinho" aria-label="Limpar carrinho" type="button">
-    <i class="fas fa-trash-alt"></i>
-   </button>
    <div class="cart-summary">
-    <div id="cartItemsCount" class="truncate">
+    <div id="cartItemsCount" class="truncate text-white font-bold mr-4">
      Itens: 0
     </div>
-    <div id="cartTotalPrice" class="truncate">
+    <div id="cartTotalPrice" class="truncate text-white font-bold">
      R$: 00,00
     </div>
    </div>
+   <button id="clearCartBtn" class="icon-button text-red-600 hover:text-red-400" title="Limpar carrinho" aria-label="Limpar carrinho" type="button">
+    <i class="fas fa-trash-alt text-2xl"></i>
+   </button>
    <button id="viewCartBtn" class="bg-gradient-to-r from-cyan-600 to-lime-400 text-white font-bold rounded-full px-4 py-2 whitespace-nowrap shrink-0" type="button">
     Ver Carrinho
    </button>
@@ -1115,8 +1115,80 @@
     }
    });
 
-   // Initialize cart UI
-   updateCartUI();
+   // Load schedule data from agendamento.json
+   async function loadScheduleData() {
+    try {
+     const response = await fetch('agendamento.json');
+     if (!response.ok) throw new Error('Erro ao carregar agendamento.json');
+     const data = await response.json();
+     return data;
+    } catch (error) {
+     console.error(error);
+     return [];
+    }
+   }
+
+   // Show schedule modal with data from JSON file
+   async function showSchedule(name, price) {
+    const scheduleModal = document.getElementById("scheduleModal");
+    const scheduleList = document.getElementById("scheduleList");
+
+    const data = await loadScheduleData();
+
+    // Filter slots for the selected service if needed, or show all
+    // Here assuming agendamento.json has array of objects with slot, status, statusText
+    // Sort slots by date/time ascending (closest first)
+    data.sort((a, b) => new Date(a.slot) - new Date(b.slot));
+
+    // Clear previous list
+    scheduleList.innerHTML = "";
+
+    // Populate list with slots and status colors + status text
+    data.forEach(({ slot, status, statusText }) => {
+     const li = document.createElement("li");
+     // Format date/time to DD/MM HH:mm
+     const dt = new Date(slot);
+     const formatted = dt.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + " " + dt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+     li.classList.add(status);
+     li.tabIndex = 0;
+     li.setAttribute("role", "button");
+
+     // Create main text and status text elements
+     const mainText = document.createElement("span");
+     mainText.textContent = formatted;
+     const statusSpan = document.createElement("span");
+     statusSpan.className = "status-text";
+     statusSpan.textContent = statusText;
+
+     li.appendChild(mainText);
+     li.appendChild(statusSpan);
+
+     if (status === "available") {
+      li.addEventListener("click", () => {
+       // On selecting an available slot, add to cart with schedule info and close modal
+       addToCart(name, price, formatted);
+       alert(`Agendado: ${name} para ${formatted}`);
+       closeSchedule();
+      });
+      li.addEventListener("keydown", (e) => {
+       if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        li.click();
+       }
+      });
+     } else {
+      // For booked or busy slots, disable click
+      li.style.cursor = "not-allowed";
+      li.setAttribute("aria-disabled", "true");
+     }
+     scheduleList.appendChild(li);
+    });
+
+    // Show modal
+    scheduleModal.classList.add("show");
+    scheduleModal.focus();
+   }
+
   </script>
  </body>
 </html>
